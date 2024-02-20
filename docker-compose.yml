@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  web:
+    # Aller chercher l'image créée avec le Dockerfile
+    image: php-blog-image
+    ports:
+      # Rediriger le port 80 du conteneur vers le port 80 de la machine
+      - "80:80"
+    volumes:
+      # Monter le dossier courant dans le conteneur
+      - .:/var/www/html
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+      MYSQL_USER: blog
+      MYSQL_PASSWORD: blog
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      # Utiliser le port 3306 du conteneur db pour se connecter à la base de données
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
